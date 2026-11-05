@@ -53,12 +53,16 @@ Después visita `http://localhost:8000`.
 
 ## Publicar en GitHub Pages
 
-1. Crea un repositorio público en GitHub y sube la rama `main`.
-2. En **Settings → Pages**, selecciona **Deploy from a branch**.
-3. Selecciona la rama `main`, carpeta `/ (root)` y pulsa **Save**.
-4. GitHub mostrará la URL de Pages cuando termine el despliegue.
+El repositorio incluye `.github/workflows/pages.yml`, que publica automáticamente el contenido estático cada vez que se actualiza `main`.
 
-El proyecto está preparado para GitHub Pages porque usa únicamente archivos estáticos y CDNs públicos.
+1. En GitHub entra a **Settings → Pages**.
+2. En **Build and deployment → Source**, selecciona **GitHub Actions**.
+3. Ejecuta el workflow **Deploy DataPulse to GitHub Pages** desde la pestaña **Actions** si no se inició automáticamente.
+4. GitHub mostrará la URL pública en el resumen del workflow y en **Settings → Pages**.
+
+La URL esperada para este repositorio es `https://davidsaavedradev.github.io/DataPulse/`, salvo que GitHub tenga configurado un dominio personalizado. Si existe un dominio personalizado incorrecto, elimínalo en **Settings → Pages → Custom domain** para que la URL `github.io` funcione.
+
+El proyecto usa únicamente archivos estáticos y CDNs públicos.
 
 ## Autor y licencia
 
