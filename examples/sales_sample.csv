@@ -1,0 +1,13 @@
+Fecha,Producto,Categoría,Región,Unidades,Ingresos,Estado
+2024-01-05,Monitor Pro,Hardware,Norte,12,3480,Completado
+2024-01-12,Teclado Mecánico,Accesorios,Centro,25,1875,Completado
+2024-01-19,Monitor Pro,Hardware,Sur,8,2320,Pendiente
+2024-02-02,Mouse Ultra,Accesorios,Norte,31,1550,Completado
+2024-02-14,Laptop Air,Hardware,Centro,6,7200,Completado
+2024-02-27,Teclado Mecánico,Accesorios,Sur,,1500,Pendiente
+2024-03-04,Monitor Pro,Hardware,Norte,15,4350,Completado
+2024-03-18,Webcam HD,Accesorios,Centro,22,2420,Completado
+2024-03-29,Laptop Air,Hardware,Sur,4,4800,Cancelado
+2024-04-06,Mouse Ultra,Accesorios,Norte,28,,Completado
+2024-04-21,Monitor Pro,Hardware,Centro,10,2900,Completado
+2024-05-03,Webcam HD,Accesorios,Sur,18,1980,Pendiente

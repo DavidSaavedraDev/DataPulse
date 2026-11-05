@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DataPulse: analiza tus archivos CSV de forma privada y visualiza tus datos con un dashboard interactivo.">
+  <meta name="theme-color" content="#070914">
+  <title>DataPulse — CSV Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="DataPulse inicio">
+      <span class="brand-mark"><span></span><span></span><span></span></span>
+      <span>Data<span class="accent-text">Pulse</span></span>
+    </a>
+    <div class="topbar-meta"><span class="status-dot"></span><span>Procesamiento local</span></div>
+  </header>
+
+  <main class="shell">
+    <section id="upload-view" class="upload-view">
+      <div class="eyebrow"><span class="eyebrow-line"></span> CSV ANALYZER <span class="eyebrow-line"></span></div>
+      <h1>Convierte tus datos<br>en <span class="gradient-text">decisiones claras.</span></h1>
+      <p class="hero-copy">Carga un CSV, descubre patrones y construye un dashboard en segundos. Tus archivos nunca abandonan tu navegador.</p>
+      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Cargar archivo CSV">
+        <div class="upload-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg></div>
+        <h2>Suelta tu archivo CSV aquí</h2>
+        <p>o haz clic para explorar en tu computador</p>
+        <span class="file-hint">CSV · hasta 25 MB</span>
+        <input id="file-input" type="file" accept=".csv,text/csv" hidden>
+      </div>
+      <div class="privacy-note"><span class="lock-icon">⌁</span> Tus datos se procesan <strong>100% localmente</strong> y nunca se suben a un servidor.</div>
+      <div class="sample-row"><span>¿Quieres probarlo?</span><button id="sample-button" class="text-button">Cargar dataset de ejemplo <span>→</span></button></div>
+      <div id="upload-error" class="alert error-alert" role="alert" hidden></div>
+    </section>
+
+    <section id="dashboard-view" class="dashboard-view" hidden>
+      <div class="dashboard-heading">
+        <div><div class="eyebrow left-eyebrow"><span class="eyebrow-line"></span> DATA EXPLORER</div><h1 id="file-title">Tu dashboard</h1><p id="file-meta">Archivo cargado localmente</p></div>
+        <div class="heading-actions"><button id="download-summary" class="button secondary-button"><span>↓</span> Resumen</button><button id="reset-button" class="button ghost-button"><span>＋</span> Nuevo archivo</button></div>
+      </div>
+      <div id="dashboard-error" class="alert error-alert" role="alert" hidden></div>
+      <div id="stat-cards" class="stat-grid"></div>
+
+      <div class="dashboard-grid">
+        <section class="panel chart-panel">
+          <div class="panel-header"><div><span class="panel-kicker">VISUALIZACIÓN</span><h2>Explora tus datos</h2></div><span class="panel-icon">◒</span></div>
+          <div class="chart-controls">
+            <label>Tipo de gráfico<select id="chart-type"><option value="bar">Barras</option><option value="line">Líneas</option><option value="pie">Distribución</option><option value="doughnut">Dona</option></select></label>
+            <label id="x-axis-label">Categoría<select id="x-column"></select></label>
+            <label>Valores<select id="y-column"></select></label>
+          </div>
+          <div class="chart-wrap"><canvas id="data-chart"></canvas><div id="chart-empty" class="empty-state" hidden>Selecciona columnas compatibles para visualizar los datos.</div></div>
+        </section>
+
+        <section class="panel summary-panel">
+          <div class="panel-header"><div><span class="panel-kicker">CALIDAD DE DATOS</span><h2>Valores vacíos</h2></div><span id="quality-score" class="quality-score">—</span></div>
+          <div id="missing-summary" class="missing-summary"></div>
+          <div class="quality-bar"><span id="quality-bar-fill"></span></div>
+          <p class="muted small" id="quality-caption"></p>
+        </section>
+      </div>
+
+      <section class="panel table-panel">
+        <div class="panel-header table-header"><div><span class="panel-kicker">REGISTROS</span><h2>Vista de datos</h2></div><div class="table-tools"><label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Buscar en la tabla..." aria-label="Buscar en la tabla"></label><button id="export-csv" class="button secondary-button"><span>↓</span> Exportar CSV</button></div></div>
+        <div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table><div id="table-empty" class="empty-state" hidden>No hay registros que coincidan con tu búsqueda.</div></div>
+        <div class="table-footer"><span id="table-count">0 registros</span><div class="pagination"><button id="prev-page" aria-label="Página anterior">‹</button><span id="page-indicator">1 / 1</span><button id="next-page" aria-label="Página siguiente">›</button></div></div>
+      </section>
+
+      <section class="panel stats-panel">
+        <div class="panel-header"><div><span class="panel-kicker">ANÁLISIS NUMÉRICO</span><h2>Estadísticas por columna</h2></div></div>
+        <div class="stats-table-wrap"><table class="numeric-table"><thead><tr><th>Columna</th><th>Valores</th><th>Mínimo</th><th>Máximo</th><th>Promedio</th><th>Suma</th></tr></thead><tbody id="numeric-stats"></tbody></table></div>
+      </section>
+      <footer class="dashboard-footer"><span>DataPulse · análisis privado en tu navegador</span><span>Hecho para datos que importan.</span></footer>
+    </section>
+  </main>
+</body>
+</html>
